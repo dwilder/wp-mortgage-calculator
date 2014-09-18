@@ -1,11 +1,12 @@
 <?php
 /*
 Plugin Name: Responsive Mortgage Calculator
-Plugin URI: http://wilderdrums.com
+Plugin URI: http://davewilder.ca
 Description: Adds a responsive mortgage calculator widget or using the shortcode [responsive-mortgage-calculator].
 Version: 1.0
 Author: liddweaver
-Author URI: http://wilderdrums.com
+Author URI: http://davewilder.ca
+License: GPLv2
 */
 
 // Call the hook to register the widget.
@@ -143,7 +144,7 @@ function lidd_rmc_display_form() {
 	echo lidd_rmc_build_input( 'text', 'Total Amount', 'lidd_rmc_total_amount', '$' );
 	echo lidd_rmc_build_input( 'text', 'Down Payment', 'lidd_rmc_down_payment', '$' );
 	echo lidd_rmc_build_input( 'text', 'Interest Rate', 'lidd_rmc_interest_rate', '%' );
-	echo lidd_rmc_build_input( 'text', 'Ammortization Period', 'lidd_rmc_ammortization', 'years' );
+	echo lidd_rmc_build_input( 'text', 'Amortization Period', 'lidd_rmc_amortization', 'years' );
 	
 	// Create a select box for the payment period.
 	echo lidd_rmc_build_input( 'select', 'Payment Period', 'lidd_rmc_payment_period', '', array( 12 => 'Monthly', 26 => 'Bi-Weekly', 52 => 'Weekly' ) );

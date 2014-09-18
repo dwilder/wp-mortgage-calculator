@@ -25,14 +25,14 @@ jQuery(document).ready(function() {
 		var ta = jQuery('#lidd_rmc_total_amount').val();
 		var dp = jQuery('#lidd_rmc_down_payment').val();
 		var ir = jQuery('#lidd_rmc_interest_rate').val();
-		var am = jQuery('#lidd_rmc_ammortization').val();
+		var am = jQuery('#lidd_rmc_amortization').val();
 		var pp = jQuery('#lidd_rmc_payment_period option:selected' ).val();
 		
 		// Get the error reporting spans.
 		var ta_error = jQuery('#lidd_rmc_total_amount-error');
 		var dp_error = jQuery('#lidd_rmc_down_payment-error');
 		var ir_error = jQuery('#lidd_rmc_interest_rate-error');
-		var am_error = jQuery('#lidd_rmc_ammortization-error');
+		var am_error = jQuery('#lidd_rmc_amortization-error');
 		
 		// Make sure the results divs are in their default states.
 		detailsDiv.hide();
@@ -92,13 +92,13 @@ jQuery(document).ready(function() {
 				period = 'Monthly';
 				break;
 		}
-		// Ammortization period. 50 years is absurdly long, but meh...
+		// Amortization period. 50 years is absurdly long, but meh...
 		if ( jQuery.isNumeric( +am ) && Math.abs(+am) < 50 && (+am) !== 0 ) {
-			// The ammortization period needs to fit nicely with the payment periods if there are decimals.
+			// The amortization period needs to fit nicely with the payment periods if there are decimals.
 			am = Math.abs( Math.ceil( (+am)*pp ) / pp );
 			removeError( am_error );
 		} else {
-			triggerError( am_error, 'Please enter an ammortization period.' );
+			triggerError( am_error, 'Please enter an amortization period.' );
 		}
 		
 		// ***** END VALIDATION ***** //
@@ -132,7 +132,7 @@ jQuery(document).ready(function() {
 			var result = numberWithCommas(parseFloat( Math.round( payment * 100 ) / 100 ).toFixed(2));
 			
 			// Summarize the data.
-			var summary = '<p>For a mortgage of <b class="lidd-b">$' + numberWithCommas(parseInt(ta - dp).toFixed(2)) + '</b> ammortized over <b class="lidd-b">';
+			var summary = '<p>For a mortgage of <b class="lidd-b">$' + numberWithCommas(parseInt(ta - dp).toFixed(2)) + '</b> amortized over <b class="lidd-b">';
 			// Determine the payment period in years.
 			summary += (Math.floor(am)) + '</b> years';
 			// Check for weeks or months.
