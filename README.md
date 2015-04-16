@@ -7,6 +7,10 @@ A simple responsive mortgage calculator widget and shortcode.
 
 The Responsive Mortgage Calculator is a jQuery widget and shortcode that's designed to fit easily into any theme, on any device, at any size. Just what every "Real Estate Agent on the go" needs.
 
+### Download
+
+Download the plugin in here or from the WordPress plugin repository: https://wordpress.org/plugins/responsive-mortgage-calculator/
+
 ### Features
 
 The calculator allows your website visitors to estimate their mortgage entering:
@@ -20,7 +24,26 @@ The payment result is displayed below the form - very simply and very easy to fo
 
 ### Redesign It
 
-The widget is built with plenty of classes to hook into for styling, so it’s easy to override the included stylesheet.
+There are settings to adjust the styling, a light and a dark theme, or you can remove the styling entirely and use your theme’s styling. The HTML is built with plenty of classes, so it’s easy to override the included stylesheet with your own CSS.
+
+### Plenty of Options
+
+* Set the interest rate compounding period for your region.
+* Set your currency symbol and currency code.
+* Hide the down payment field.
+* Set a fixed payment period.
+* Rename the input labels.
+* Add your own CSS classes.
+
+### Shortcode Attributes
+
+Use the shortcode on different pages with different field names by using shortcode attributes. They’re pretty obvious, but here’s an example:
+
+`[mortgagecalculator totalamount=“Mortgage Amount”]`
+
+or use the first letter of the original labels:
+
+`[rmc ta=“Mortgage Amount]`
 
 ### Known Issues
 
@@ -28,7 +51,7 @@ The widget and short code rely on the same jQuery script at the moment. The shor
 
 ### DISCLAIMER
 
-The calculator is for demonstration purposes only and may not reflect actual numbers for your mortgage. Assumes constant interest rate throughout amortization period; interest calculated semi-annually.
+The calculator is for demonstration purposes only and may not reflect actual numbers for your mortgage. Assumes constant interest rate throughout amortization period.
 
 It's pretty darn good, but the bank has the final say...
 
