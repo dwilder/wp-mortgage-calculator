@@ -1,4 +1,7 @@
 <?php
+
+defined('ABSPATH') or die("...");
+
 /**
  * A class to hold the plugin settings
  *
@@ -8,18 +11,24 @@
 class LiddMCOptions
 {
 	/**
-	 * Store the plugin options.
-	 *
-	 * @var array
+	 * @var     array   options     Saved options
+     * @since   2.0.0
 	 */
-	private $options = array();
+	private $options;
+    
+    /**
+     * @var     array   defaults    Default options
+     * @since   2.2.7
+     */
+    private $defaults;
 	
 	/**
 	 * Get the settings from the database and store in the object.
 	 */
 	public function __construct()
 	{
-		$this->options = get_option( LIDD_MC_OPTIONS );
+		$this->options  = get_option( LIDD_MC_OPTIONS );
+        $this->defaults = include LIDD_MC_ROOT . 'includes/defaults.php';
 	}
 	
 	/**
@@ -33,6 +42,12 @@ class LiddMCOptions
 		if ( isset( $this->options[$option] ) ) {
 			return $this->options[$option];
 		}
+        
+        if ( isset( $this->defaults[$option] ) ) {
+            return $this->defaults[$option];
+        }
+        
+        return null;
 	}
 	
 }

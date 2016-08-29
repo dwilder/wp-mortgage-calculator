@@ -1,4 +1,7 @@
 <?php
+
+defined('ABSPATH') or die("...");
+
 /**
  * A class to define the mortgage calculator form
  *
@@ -24,6 +27,12 @@ class LiddMCForm
 	 * @var string
 	 */
 	private $name;
+    
+    /**
+     * Store the submission processor
+     * @var object
+     */
+    private $processor;
 	
 	/**
 	 * Constructor.
@@ -37,8 +46,19 @@ class LiddMCForm
 	{
 		$this->name = $name;
 		$this->options = $options;
+        
+        $this->set_processor();
 	}
 	
+    /**
+     * Process submissions
+     */
+    private function set_processor()
+    {
+        include LIDD_MC_ROOT . 'includes/LiddMCProcessor.php';
+        $this->processor = new LiddMCProcessor( $this->options['compounding_period'] );
+    }
+    
 	/**
 	 * Return the form.
 	 *
@@ -79,55 +99,115 @@ class LiddMCForm
 		// Amortization period
 		$ap = $factory->newInput( 'text', 'lidd_mc_amortization_period' );
 		$ap->setLabel( $options['amortization_period_label'] );
-		$ap->setPlaceholder( __( 'years', 'responsive-mortgage-calculator' ) );
+        if ( isset( $options['amortization_period_units'] ) ) {
+            switch ( $options['amortization_period_units'] ) {
+                case 1:
+            		$ap->setPlaceholder( __( 'months', 'responsive-mortgage-calculator' ) );
+                    break;
+                case 0:
+                default:
+            		$ap->setPlaceholder( __( 'years', 'responsive-mortgage-calculator' ) );
+                    break;
+                    
+            }
+        } else {
+    		$ap->setPlaceholder( __( 'years', 'responsive-mortgage-calculator' ) );
+        }
 		$ap->setClass( $options['amortization_period_class'] );
 	
 		// Payment period
-		if ( in_array( $options['payment_period'], array( 12, 26, 52 ) ) ) {
+		if ( in_array( $options['payment_period'], array( 1, 2, 4, 12, 26, 52 ) ) ) {
 			$pp = $factory->newInput( 'hidden', 'lidd_mc_payment_period' );
 			$pp->setValue( $options['payment_period'] );
 		} else {
+            
 			$pp = $factory->newInput( 'select', 'lidd_mc_payment_period' );
 			$pp->setLabel( $options['payment_period_label'] );
 			$pp->setClass( $options['payment_period_class'] );
-			$pp->setOptions( array(
-					12 => __( 'Monthly', 'responsive-mortgage-calculator' ),
-					26 => __( 'Bi-Weekly', 'responsive-mortgage-calculator' ),
-					52 => __( 'Weekly', 'responsive-mortgage-calculator' )
-				) );
+            
+            // Create the options array
+            $pp_options = array();
+            
+            // Create a reference array for allowed payment periods
+            $allowed_payment_periods = array(
+				1  => __( 'Yearly', 'responsive-mortgage-calculator' ),
+				2  => __( 'Semi-Annually', 'responsive-mortgage-calculator' ),
+				4  => __( 'Quarterly', 'responsive-mortgage-calculator' ),
+				12 => __( 'Monthly', 'responsive-mortgage-calculator' ),
+				26 => __( 'Bi-Weekly', 'responsive-mortgage-calculator' ),
+				52 => __( 'Weekly', 'responsive-mortgage-calculator' )
+            );
+            
+            // Loop over allowed payment periods to check for settings
+            foreach ( $allowed_payment_periods as $app => $app_name ) {
+                
+                // Temporary variable to store the option name for the payment period
+                $app_option_name = 'payment_period_option_' . $app;
+                
+                // Check if this payment period option is set
+                if ( isset( $options[ $app_option_name ] ) && $options[ $app_option_name ] ) {
+                    $pp_options[ $app ] = $app_name;
+                }
+            }
+            
+            // Make sure payment periods are set
+            if ( empty( $pp_options ) ) {
+                
+                // Default payment periods
+                $pp_options = array(
+    				12 => __( 'Monthly', 'responsive-mortgage-calculator' ),
+    				26 => __( 'Bi-Weekly', 'responsive-mortgage-calculator' ),
+    				52 => __( 'Weekly', 'responsive-mortgage-calculator' )
+                );
+            }
+            
+            // Pass the payment periods to the payment period input
+			$pp->setOptions( $pp_options );
 		}
-
-		// Number of compounding periods
-		$cp = $factory->newInput( 'hidden', 'lidd_mc_compounding_period' );
-		$cp->setValue( $options['compounding_period'] );
-
-		// Currency
-		$cur = $factory->newInput( 'hidden', 'lidd_mc_currency' );
-		$cur->setValue( $options['currency'] );
-		
-		// Currency Code
-		$cc = $factory->newInput( 'hidden', 'lidd_mc_currency_code' );
-		$cc->setValue( $options['currency_code'] );
 	
 		// Submit button
 		$sub = $factory->newInput( 'submit', 'lidd_mc_submit' );
 		$sub->setValue( $options['submit_label'] );
 		$sub->setClass( $options['submit_class'] );
+        
+        // Set submitted data submission
+        if ( $this->processor->has_submission() ) {
+            
+            $ta->setValue( $this->processor->get( 'total_amount' ) );
+            $dp->setValue( $this->processor->get( 'down_payment' ) );
+            $ir->setValue( $this->processor->get( 'interest_rate' ) );
+            $ap->setValue( $this->processor->get( 'amortization_period' ) );
+            $pp->setValue( $this->processor->get( 'payment_period' ) );
+            
+            if ( $this->processor->has_error() ) {
+                
+                $localization = rmcp_get_localization();
+                $errors = $this->processor->get_errors();
+                
+                ( isset( $errors['total_amount'] ) ) && $ta->setError( $localization['ta_error'] );
+                ( isset( $errors['down_payment'] ) ) && $dp->setError( $localization['dp_error'] );
+                ( isset( $errors['interest_rate'] ) ) && $ir->setError( $localization['ir_error'] );
+                ( isset( $errors['amortization_period'] ) ) && $ap->setError( $localization['ap_error'] );
+            }
+        }
+        
+    	// Create a display area for results.
+    	$details = new LiddMCDetails( $options, $this->processor );
 		
 		// Build the form
-		$form = "<form action=\"http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]\" id=\"" . esc_attr( $this->name ) . "\" class=\"" . esc_attr( $this->name ) . "\" method=\"post\">";
+        $protocol = ( is_ssl() ) ? 'https://' : 'http://';
+		$form = "<form action=\"$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]#" . esc_attr( $this->name ) . "\" id=\"" . esc_attr( $this->name ) . "\" class=\"" . esc_attr( $this->name ) . "\" method=\"post\">";
 
 		$form .= $ta->getInput();
 		$form .= $dp->getInput();
 		$form .= $ir->getInput();
 		$form .= $ap->getInput();
 		$form .= $pp->getInput();
-		$form .= $cp->getInput();
-		$form .= $cur->getInput();
-		$form .= $cc->getInput();
 		$form .= $sub->getInput();
 		
 		$form .= '</form>';
+        
+        $form .= $details->getDetails();
 		
 		return $form;
 	}

@@ -3,7 +3,7 @@
 Plugin Name: Responsive Mortgage Calculator
 Plugin URI: http://liddweaver.com/responsive-mortgage-calculator/
 Description: Add a responsive mortgage calculator widget or use the shortcode [mortgagecalculator] or [rmc]. Plenty of options to customize it to your preference.
-Version: 2.1.4
+Version: 2.2.9
 Author: liddweaver
 Author URI: http://liddweaver.com
 License: GPLv2
@@ -14,16 +14,23 @@ Text Domain: responsive-mortgage-calculator
 
 
 // Make sure the plugin is accessed through the appropriate channels
-defined('ABSPATH') or die("Cannot access this plugin directly.");
+defined('ABSPATH') || die;
 
 
 // -----------------------------------
 // Constants
 
 
-defined( 'LIDD_MC_ROOT' ) or define( 'LIDD_MC_ROOT', plugin_dir_path( __FILE__ ) );
-defined( 'LIDD_MC_URL' ) or define( 'LIDD_MC_URL', plugin_dir_url( __FILE__ ) );
 defined( 'LIDD_MC_OPTIONS' ) or define( 'LIDD_MC_OPTIONS', 'lidd_mc_options' );
+defined( 'LIDD_MC_ROOT' ) or define( 'LIDD_MC_ROOT', plugin_dir_path( __FILE__ ) );
+
+function lidd_mc_url() {
+    $url = plugin_dir_url( __FILE__ );
+    if ( is_ssl() ) $url = str_replace( 'http://', 'https://', $url );
+    return $url;
+}
+defined( 'LIDD_MC_URL' ) or define( 'LIDD_MC_URL', lidd_mc_url() );
+
 
 
 // -----------------------------------
@@ -43,7 +50,7 @@ add_action( 'plugins_loaded', 'lidd_mc_load_plugin_textdomain' );
 register_activation_hook( __FILE__, 'lidd_mc_install' );
 function lidd_mc_install() {
 	// Only add the options if they don't already exist.
-	if ( !get_option( LIDD_MC_OPTIONS ) ) {
+	if ( ! get_option( LIDD_MC_OPTIONS ) ) {
 		lidd_mc_load_plugin_textdomain(); // Load text domain
 		$defaults = include( 'includes/defaults.php' ); // Get defaults
 		update_option( LIDD_MC_OPTIONS, $defaults ); // Insert defaults into the options table
