@@ -190,6 +190,15 @@ class LiddMCForm
                 ( isset( $errors['amortization_period'] ) ) && $ap->setError( $localization['ap_error'] );
             }
         }
+        // Set options
+        else {
+            
+            isset( $options['total_amount_value'] ) && $ta->setValue( $options['total_amount_value'] );
+            isset( $options['down_payment_value'] ) && $dp->setValue( $options['down_payment_value'] );
+            isset( $options['interest_rate_value'] ) && $ir->setValue( $options['interest_rate_value'] );
+            isset( $options['amortization_period_value'] ) && $ap->setValue( $options['amortization_period_value'] );
+            
+        }
         
     	// Create a display area for results.
     	$details = new LiddMCDetails( $options, $this->processor );

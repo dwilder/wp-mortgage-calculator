@@ -3,8 +3,8 @@ Contributors: liddweaver
 Donate link: http://liddweaver.com/donate/
 Tags: mortgage, mortgage calculator, loan, realty, realtor, real estate, widget, responsive, jquery
 Requires at least: 3.0.1
-Tested up to: 4.4
-Stable tag: 2.2.9
+Tested up to: 4.6
+Stable tag: 2.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,7 @@ There are settings to adjust the styling, a light and a dark theme, or you can r
 * Set a default interest rate.
 * Accept amortization period in months or years.
 * Set a fixed payment period.
+* Set available payment period options.
 * Rename the input labels.
 * Add your own CSS classes.
 
@@ -49,7 +50,15 @@ Use the shortcode on different pages with different field names by using shortco
 
 or use the first letter of the original labels:
 
-`[rmc ta=“Mortgage Amount]`
+`[rmc ta=“Mortgage Amount”]`
+
+Set input values using attributes for total amount, down payment, interest rate, and amortization period the long way:
+
+`[mortgagecalculator total_amount_value=“$250,000” down_payment_value=“$50,000” interest_rate_value=“3.49%” amortization_period_value=“15 years”]`
+
+or using the short versions:
+
+`[rmc tav=“$250,000” dpv=“$50,000” irv=“3.49%” apv=“15 years”]`
 
 = Disclaimer =
 
@@ -113,6 +122,19 @@ This is a known issue. In the current version of the calculator, there can only 
 3. A longer summary of the mortgage details is displayed when the ‘inspector’ icon is clicked.
 
 == Changelog ==
+
+= 2.3.1 =
+
+* Added shortcode attributes to set input values. Various permutations of the attributes are available, with some listed below
+* Total amount value can now be set using the shortcode attribute total_amount_value or tav
+* Down payment value can now be set using the shortcode attribute down_payment_value or dpv
+* Interest rate value can now be set using the shortcode attribute  interest_rate_value or irv
+* Amortization period value can now be set using the shortcode attribute amortization_period_value or apv
+
+= 2.3.0 =
+
+* Added options to set which payment periods can be selected
+* Added option for semi-annual payment period
 
 = 2.2.9 =
 

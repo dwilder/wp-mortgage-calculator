@@ -43,7 +43,15 @@ Use the shortcode on different pages with different field names by using shortco
 
 or use the first letter of the original labels:
 
-`[rmc ta=“Mortgage Amount]`
+`[rmc ta=“Mortgage Amount”]`
+
+Set input values using attributes for total amount, down payment, interest rate, and amortization period the long way:
+
+`[mortgagecalculator total_amount_value=“$250,000” down_payment_value=“$50,000” interest_rate_value=“3.49%” amortization_period_value=“15 years”]`
+
+or using the short versions:
+
+`[rmc tav=“$250,000” dpv=“$50,000” irv=“3.49%” apv=“15 years”]`
 
 ### Known Issues
 

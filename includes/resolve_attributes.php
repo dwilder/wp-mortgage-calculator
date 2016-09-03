@@ -39,12 +39,20 @@ function lidd_mc_resolve_attributes( $attr, $options ) {
 	
 	// Check for label attributes
 	$attr_keys = array(
-		'total_amount_label' => array( 'ttl', 'ta', 'total', 'amount', 'total_amount', 'totalamount' ),
-		'down_payment_label' => array( 'dp', 'down', 'down_payment', 'downpayment' ),
-		'interest_rate_label' => array( 'ir', 'int', 'rate', 'interest', 'interest_rate', 'interestrate' ),
+        
+        // Labels
+		'total_amount_label'        => array( 'ttl', 'ta', 'total', 'amount', 'total_amount', 'totalamount' ),
+		'down_payment_label'        => array( 'dp', 'down', 'down_payment', 'downpayment' ),
+		'interest_rate_label'       => array( 'ir', 'int', 'rate', 'interest', 'interest_rate', 'interestrate' ),
 		'amortization_period_label' => array( 'ap', 'amortization', 'amortization_period', 'amortizationperiod' ),
-		'payment_period_label' => array( 'pp', 'payment', 'payment_period', 'payment' ),
-		'submit_label' => array( 'sb', 'submit', 'button', 'calculate' )
+		'payment_period_label'      => array( 'pp', 'payment', 'payment_period', 'payment' ),
+		'submit_label'              => array( 'sb', 'submit', 'button', 'calculate' ),
+        
+        // Values
+        'total_amount_value'        => array( 'tav', 'total_amount_value', 'taamount', 'tavalue', 'value', 'total_value', 'totalvalue'),
+        'down_payment_value'        => array( 'dpv', 'down_payment_value', 'dpamount', 'dpvalue', 'down_value', 'downvalue' ),
+        'interest_rate_value'       => array( 'irv', 'interest_rate_value', 'iramount', 'irvalue', 'interest_value', 'interestvalue', 'rate_value', 'ratevalue' ),
+        'amortization_period_value' => array( 'apv', 'amortization_period_value', 'apamount', 'apvalue', 'amortization_value', 'amortizationvalue' ),
 	);
 	
 	foreach ( $attr_keys as $k => $array ) {

@@ -28,7 +28,7 @@ function lidd_mc_detect_shortcode() {
 // Check whether to load JS and CSS
 function lidd_mc_are_scripts_required() {
     
-    $version = '2.3.0';
+    $version = '2.2.9';
     
     // Register JS
     wp_register_script( 'lidd_mc', LIDD_MC_URL . 'js/lidd-mc.js', 'jquery', $version, true );
